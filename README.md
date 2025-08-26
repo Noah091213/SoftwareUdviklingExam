@@ -28,7 +28,7 @@ Currently no outside libraries are required to run the program
 Step-by-step guide on how to install and run the project.
 
 ```bash
-# Example to only download
+# Example to download and compile the project
 git clone https://github.com/Noah091213/SoftwareUdviklingExam.git
 mkdir build
 cd build
