@@ -35,9 +35,10 @@ int main() {
     Enemy strongFighter("Strong Fighter", 8, 3, 400, "*Stabs with knife*");
     Enemy strongerFighter("Stronger Fighter", 10, 4, 500, "*Swipes with sword*");
     Enemy StrongestFighter("Strongest Fighter", 15, 5, 800, "*Pokes with trident*");
-    Enemy Gorilla("Gorilla", 30, 5, 1000, "Oooh Banana");   // I hope you get this reference
-    Enemy Lion("Lion", 5, 8, 1500, "RAWR");
-    Enemy Caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*");
+    Enemy gorilla("Gorilla", 30, 5, 1000, "Oooh Banana");   // I hope you get this reference
+    Enemy lion("Lion", 5, 8, 1500, "RAWR");
+    Enemy elephant("Elephant", 40, 6, 2000, "*Stomp stomp*");
+    Enemy caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*");
 
     
 
@@ -133,7 +134,7 @@ int main() {
                 inputErrorCheck();
                 std::cin >> choiceInt;
                 
-                if (choiceInt >= 0 && choiceInt <= 6) {
+                if (choiceInt >= 0 && choiceInt <= 7) {
                     switch(choiceInt) {
                         case 1: // Get stats
                             if(enableDebug == true) {std::cout << "Stats print" << std::endl;}
@@ -149,12 +150,54 @@ int main() {
 
                         case 3: // Arena
                             if(enableDebug == true) {std::cout << "Arena grounds" << std::endl;}
+                            std::cout << "Please select an opponent! \n" << 
+                            " 1. Weak fighter\n 2. Strong fighter\n 3. Stronger fighter\n 4. Strongest fighter\n 5. Gorilla\n 6. Lion\n 7. Elephant" << std::endl;
+
+                            choiceInt = 0;
+                            inputErrorCheck();
+                            std::cin >> choiceInt;
+                            
+                            if (choiceInt >= 0 && choiceInt <= 7) {
+                                switch(choiceInt) {
+                                    case 1:
+                                        currentEnemy = weakFighter;
+                                        break;
+                                    
+                                    case 2:
+                                        currentEnemy = strongFighter;
+                                        break;
+                                        
+                                    case 3:
+                                        currentEnemy = strongerFighter;
+                                        break;
+                                        
+                                    case 4:
+                                        currentEnemy = StrongestFighter;
+                                        break;
+                                        
+                                    case 5:
+                                        currentEnemy = gorilla;
+                                        break;
+                                        
+                                    case 6:
+                                        currentEnemy = lion;
+                                        break;
+                                        
+                                    case 7:
+                                        currentEnemy = elephant;
+                                        break;
+                                }
+                            gameState = inFight;
+                            }
+                                        
+
 
                             break;
 
                         case 4: // Boss fight
                             if(enableDebug == true) {std::cout << "Boss fight" << std::endl;}
-
+                            currentEnemy = caesar;
+                            gameState = inFight;
                             break;
 
                         case 5: // Heal
@@ -200,7 +243,7 @@ int main() {
                     switch (currentTurn) {
                         case playerTurn:
                             // Player option select
-                            std::cout << "\nYour turn turn\n \nWhat do you want to do?\n 1. Attack\n 2. Drink a potion\n 3. Run, you will still take damage once" << std::endl;
+                            std::cout << "\nYour turn\n \nWhat do you want to do?\n 1. Attack\n 2. Drink a potion\n 3. Run, you will still take damage once" << std::endl;
                             
                             choiceInt = 0;
                             inputErrorCheck();
@@ -240,15 +283,25 @@ int main() {
                             // Enemy do damage
                             std::cout << "\nEnemys turn\n" << std::endl;
                             isFighting = activeHero.takeDamage(currentEnemy.doDamage());
+                            if (activeHero.getCurrentHP() <= 0) {
+                                for (int i = 0; i < storedHeros.size(); i++) {
+                                    if (activeHero.getName() == storedHeros[i].getName()){
+                                        storedHeros.erase(storedHeros.begin()+i);
+                                    }
+                                }
+                                
+                                gameState = startMenu;
+
+                            }
                             currentTurn = playerTurn;
                             break;
 
                     }
                     
                 }
-
-                gameState = gameMenu;
-
+                if (activeHero.getCurrentHP() > 0) {
+                    gameState = gameMenu;
+                }
 
                 break;
 
