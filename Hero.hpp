@@ -21,7 +21,7 @@ class Hero {
         void setCurrentXP(int newXP);
         void getCurrentStats();
 
-        void takeDamage(int damage);
+        bool takeDamage(int damage);
         void healHeroFull();
         void usePotion();
         void givePotion(int amount);

@@ -17,17 +17,6 @@ bool stringIsEqual (std::string input1, std::string input2) {
 
 }
 
-void createEnemies() {
-    Enemy horse("Horse", 4, 1, 100);
-    Enemy weakGoblin("Weak Goblin", 4, 2, 200);
-    Enemy strongGoblin("Strong Goblin", 8, 3, 400);
-    Enemy strongerGoblin("Stronger Goblin", 10, 4, 500);
-    Enemy StrongestGoblin("Strongest Goblin", 15, 5, 800);
-    Enemy apeKing("Ape king", 30, 5, 1000);
-    Enemy unicorn("Unicorn", 5, 8, 1500);
-    Enemy Caesar("Caesar", 100, 10, 3000);
-}
-
 void inputErrorCheck() {
     if (!std::cin) {
         std::cin.clear();

@@ -3,7 +3,6 @@
 #include <string>
 
 bool stringIsEqual(std::string input1, std::string input2);
-void createEnemies();
 void inputErrorCheck();
 void invalidInputPrint();
 

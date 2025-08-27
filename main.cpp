@@ -8,14 +8,37 @@
 
 int main() {
     std::cout << "Welcome to the gladiator ring" << std::endl;
+
+    // Init variables, cannot be done later as the game runs in a statemachine
     bool gameRun = true;
     bool enableDebug = true;
+
     std::string choiceString;
-    int choiceInt = 0;
+    int         choiceInt = 0;
+    
     enum gameStates {startMenu, gameMenu, inFight, loadChar, newChar, shopMenu};
+    enum fightTurns {playerTurn, enemyTurn};
     gameStates gameState = startMenu;
+    fightTurns currentTurn;
+    
     Hero activeHero;
+    Enemy currentEnemy;
     std::vector<Hero> storedHeros;
+
+    bool isFighting;
+    int xpReward;
+    
+
+    // Create enemy types
+    Enemy trainingDummy("Training dummy", 4, 1, 100, "BoNk");
+    Enemy weakFighter("Weak Fighter", 4, 2, 200, "*Punches with fist*");
+    Enemy strongFighter("Strong Fighter", 8, 3, 400, "*Stabs with knife*");
+    Enemy strongerFighter("Stronger Fighter", 10, 4, 500, "*Swipes with sword*");
+    Enemy StrongestFighter("Strongest Fighter", 15, 5, 800, "*Pokes with trident*");
+    Enemy Gorilla("Gorilla", 30, 5, 1000, "Oooh Banana");   // I hope you get this reference
+    Enemy Lion("Lion", 5, 8, 1500, "RAWR");
+    Enemy Caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*");
+
     
 
     while (gameRun == true) {
@@ -120,7 +143,8 @@ int main() {
 
                         case 2: // Train
                             if(enableDebug == true) {std::cout << "Training grounds" << std::endl;}
-
+                            currentEnemy = trainingDummy;
+                            gameState = inFight;
                             break;
 
                         case 3: // Arena
@@ -162,6 +186,69 @@ int main() {
 
             case inFight:
                 if(enableDebug == true) {std::cout << "inFight state" << std::endl;}
+
+                isFighting = true;
+                xpReward = 0;
+                currentTurn = playerTurn;
+            
+
+                // Start fight
+                
+                
+                std::cout;
+                while(isFighting == true && activeHero.getCurrentHP() >= 0 && currentEnemy.getHP() >= 0) {
+                    switch (currentTurn) {
+                        case playerTurn:
+                            // Player option select
+                            std::cout << "\nYour turn turn\n \nWhat do you want to do?\n 1. Attack\n 2. Drink a potion\n 3. Run, you will still take damage once" << std::endl;
+                            
+                            choiceInt = 0;
+                            inputErrorCheck();
+                            std::cin >> choiceInt;
+                            
+                            if (choiceInt >= 0 && choiceInt <= 3) {
+                                currentTurn = enemyTurn;
+                                switch(choiceInt) {
+                                    case 1:
+                                        xpReward = currentEnemy.takeDamage(activeHero.getStrength());
+
+                                        if (xpReward == 0) {
+                                            std::cout << "HUARH   you deal " << activeHero.getStrength() << " damage to " << currentEnemy.getName() << "\n" << currentEnemy.getName() << " has " << currentEnemy.getHP() << " HP left"<<std::endl;
+                                        } else {
+                                            //std::cout << "Haha *stabs opponent in the heart* \nYou defeated " << currentEnemy.getName() << " and recieved " << xpReward << " XP" << std::endl;
+                                            activeHero.giveXP(xpReward);
+                                            isFighting = false;
+                            
+                                            break;
+                                        }
+                                    break;
+
+                                    case 2:
+                                        activeHero.usePotion();
+                                    break;
+
+                                    case 3:
+                                        std::cout << "You run like a coward and lose 200 XP" << std::endl;
+                                        activeHero.giveXP(-200);
+                                        isFighting = false;
+                                    break;
+                                }
+                            }
+                            break;
+                        
+                        case enemyTurn:
+                            // Enemy do damage
+                            std::cout << "\nEnemys turn\n" << std::endl;
+                            isFighting = activeHero.takeDamage(currentEnemy.doDamage());
+                            currentTurn = playerTurn;
+                            break;
+
+                    }
+                    
+                }
+
+                gameState = gameMenu;
+
 
                 break;
 
