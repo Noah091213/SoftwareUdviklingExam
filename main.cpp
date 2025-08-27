@@ -11,7 +11,7 @@ int main() {
 
     // Init variables, cannot be done later as the game runs in a statemachine
     bool gameRun = true;
-    bool enableDebug = true;
+    bool enableDebug = false;
 
     std::string choiceString;
     int         choiceInt = 0;

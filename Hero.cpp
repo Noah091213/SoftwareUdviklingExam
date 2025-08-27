@@ -95,7 +95,7 @@ void Hero::usePotion() {
 
         std::cout << heroName << " drank a health potion, and is now at " << currentHP << " HP" << std::endl;
     } else {
-        std::cout << "No potions available" << std::endl;
+        std::cout << "No potions available, you stumble while searching and lose your turn" << std::endl;
     }
 }
 
@@ -106,7 +106,7 @@ void Hero::givePotion(int amount) {
 void Hero::giveXP(int XP) {
     currentXP += XP;
     if (checkLevelUp() == false) {
-        std::cout << heroName << " earned " << XP << " xp, and is currently at " << currentXP << ". " << currentLevel*1000-currentXP << " is needed to level up!" << std::endl;
+        std::cout << heroName << " earned " << XP << " xp, and is currently at " << currentXP << ". " << currentLevel*1000-currentXP << " XP is needed to level up!" << std::endl;
     } else {
         std::cout << "\nCongratulations! " << heroName << " leveled up to level " << currentLevel << std::endl; 
     }
