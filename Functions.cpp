@@ -25,5 +25,12 @@ void createEnemies() {
     Enemy StrongestGoblin("Strongest Goblin", 15, 5, 800);
     Enemy apeKing("Ape king", 30, 5, 1000);
     Enemy unicorn("Unicorn", 5, 8, 1500);
-    Enemy dragon("Dragon", 100, 10, 3000);
+    Enemy Caesar("Caesar", 100, 10, 3000);
+}
+
+void inputErrorCheck() {
+    if (!std::cin) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 }

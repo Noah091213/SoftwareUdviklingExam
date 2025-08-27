@@ -23,9 +23,10 @@ int main() {
             
             case startMenu:
                 if(enableDebug == true) {std::cout << "startMenu state" << std::endl;}
-                
+
                 std::cout << "\nWhat would you like to do?\n\n 1. Create a new character \n 2. Load a previous character" << std::endl;
                 choiceInt = 0;
+                inputErrorCheck();
                 std::cin >> choiceInt;
 
                 switch (choiceInt) {
@@ -57,12 +58,18 @@ int main() {
                     }
                     std::cout << "\nPlease select a fighter!" << std::endl;
                     choiceInt = 0;
+                    inputErrorCheck();
                     std::cin >> choiceInt;
+                    
+                    if (choiceInt != 0) {
+                        activeHero = storedHeros[choiceInt-1];
+                        std::cout << activeHero.getName() << "is your fighter!" << std::endl;
+                        
+                        gameState = gameMenu;
+                    } else {
+                        std::cout << "Please select a valid fighter" << std::endl;
+                    }
 
-                    activeHero = storedHeros[choiceInt-1];
-                    std::cout << activeHero.getName() << "is your fighter!" << std::endl;
-
-                    gameState = gameMenu;
                     break;
 
                 } else {
@@ -80,6 +87,7 @@ int main() {
                 
                 std::cout << "\nWhat is the name of your fighter?" << std::endl;
                 
+                inputErrorCheck();
                 std::cin >> choiceString;
 
                 activeHero.setName(choiceString);
@@ -99,31 +107,33 @@ int main() {
 
                 std::cout << " 1. Show fighter stats \n 2. Train \n 3. Fight in the ring \n 4. Fight Caesar \n 5. Rest \n 6. Go to main menu" << std::endl;
                 choiceInt = 0;
+                inputErrorCheck();
                 std::cin >> choiceInt;
+                
                 if (choiceInt >= 0 && choiceInt <= 6) {
                     switch(choiceInt) {
-                        case 1:
+                        case 1: // Get stats
                             activeHero.getCurrentStats();
                         break;
 
-                        case 2:
+                        case 2: // Train
 
                         break;
 
-                        case 3:
+                        case 3: // Arena
 
                         break;
 
-                        case 4:
+                        case 4: // Boss fight
 
                         break;
 
-                        case 5:
+                        case 5: // Heal
                             activeHero.healHero();
                             std::cout << activeHero.getName() << " is resting for night and is healed to " << activeHero.getCurrentHP() << std::endl;
                         break;
 
-                        case 6:
+                        case 6: // Main menu
                             gameState = startMenu;
                         break;
                     }

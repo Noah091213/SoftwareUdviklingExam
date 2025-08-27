@@ -63,8 +63,8 @@ void Hero::setCurrentXP(int newXP){
 }
 
 void Hero::getCurrentStats() {
-    std::cout << "\n" << heroName << " is currently at " << currentHP << " out of " << maxHP << " HP"<< 
-    "\nThey are level " << currentLevel << " with " << currentLevel*1000-currentXP << " XP away from leveling up!" << 
+    std::cout << "\n" << heroName << " is currently at " << currentHP << "/" << maxHP << " HP"<< 
+    "\nThey are level " << currentLevel << " with " << currentXP << "/" << currentLevel*1000 << " XP to level up!" << 
     "\nCurrent strength is " << currentStrength << std::endl;
 }
 
