@@ -2,8 +2,16 @@
 #include <iostream>
 
 
+Hero::Hero() {  // Default constructor, is supposed to be overwritten
+    heroName     = "unnamed";
+    maxHP        = 10;
+    currentHP    = maxHP;
+    currentXP    = 0;
+    currentLevel = 1;
+    strength     = 2;
+}
 
-Hero::Hero(std::string name) {
+Hero::Hero(std::string name) {  // Constructor with a name
     heroName     = name;
     maxHP        = 10;
     currentHP    = maxHP;
@@ -23,6 +31,10 @@ bool Hero::checkLevelUp(){
     } else {return false;}  // If it is not time to level up yet, return false
 }
 
+std::string Hero::getName() {
+    return heroName;
+}
+
 int Hero::getCurrentHP() {
     return currentHP;
 }
@@ -38,7 +50,11 @@ int Hero::getCurrentXP() {
 int Hero::getCurrentLevel() {
     return currentLevel;
 }
-        
+
+void Hero::setName(std::string name){
+    heroName = name;
+}
+
 void Hero::setCurrentHP(int newHP){
     currentHP = newHP;
 }

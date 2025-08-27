@@ -5,15 +5,18 @@
 class Hero {
 
     public:
-        Hero(std::string name); //  Constructor, always requires a name, to differentiate heroes
+        Hero();
+        Hero(std::string name); 
 
         bool checkLevelUp();
 
+        std::string getName();
         int getCurrentHP();
         int getStrength();
         int getCurrentXP();
         int getCurrentLevel();
         
+        void setName(std::string name);
         void setCurrentHP(int newHP);
         void setCurrentXP(int newXP);
 
