@@ -12,7 +12,7 @@ int main() {
     bool enableDebug = true;
     std::string choiceString;
     int choiceInt = 0;
-    enum gameStates {startMenu, gameMenu, inFight, loadChar, newChar};
+    enum gameStates {startMenu, gameMenu, inFight, loadChar, newChar, shopMenu};
     gameStates gameState = startMenu;
     Hero activeHero;
     std::vector<Hero> storedHeros;
@@ -38,8 +38,8 @@ int main() {
                         gameState = loadChar;
                     break;
 
-                    case 0:
-                        std::cout << "Please select a valid option" << std::endl;
+                    default:
+                        invalidInputPrint();
                     break;
                 }
 
@@ -105,7 +105,7 @@ int main() {
 
                 std::cout <<"\n\n"<<  activeHero.getName() << " is your fighter! What would you like to do?" << std::endl;
 
-                std::cout << " 1. Show fighter stats \n 2. Train \n 3. Fight in the ring \n 4. Fight Caesar \n 5. Rest \n 6. Go to main menu" << std::endl;
+                std::cout << " 1. Show fighter stats \n 2. Train \n 3. Fight in the ring \n 4. Fight Caesar \n 5. Rest \n 6. Shop \n 7. Go to main menu" << std::endl;
                 choiceInt = 0;
                 inputErrorCheck();
                 std::cin >> choiceInt;
@@ -113,38 +113,93 @@ int main() {
                 if (choiceInt >= 0 && choiceInt <= 6) {
                     switch(choiceInt) {
                         case 1: // Get stats
+                            if(enableDebug == true) {std::cout << "Stats print" << std::endl;}
                             activeHero.getCurrentStats();
-                        break;
+                            
+                            break;
 
                         case 2: // Train
+                            if(enableDebug == true) {std::cout << "Training grounds" << std::endl;}
 
-                        break;
+                            break;
 
                         case 3: // Arena
+                            if(enableDebug == true) {std::cout << "Arena grounds" << std::endl;}
 
-                        break;
+                            break;
 
                         case 4: // Boss fight
+                            if(enableDebug == true) {std::cout << "Boss fight" << std::endl;}
 
-                        break;
+                            break;
 
                         case 5: // Heal
-                            activeHero.healHero();
-                            std::cout << activeHero.getName() << " is resting for night and is healed to " << activeHero.getCurrentHP() << std::endl;
-                        break;
+                            if(enableDebug == true) {std::cout << "Heal print" << std::endl;}
+                            activeHero.healHeroFull();
+                            
+                            break;
 
-                        case 6: // Main menu
+                        case 6: // Shop
+                            gameState = shopMenu;
+                            
+                            break;
+
+                        case 7: // Main menu
+                            if(enableDebug == true) {std::cout << "Return to main menu" << std::endl;}
                             gameState = startMenu;
-                        break;
+                            
+                            break;
+
+                        default: 
+                            invalidInputPrint();
+                            
+                            break;
                     }
                 }
-
                 break;
 
 
 
             case inFight:
                 if(enableDebug == true) {std::cout << "inFight state" << std::endl;}
+
+                break;
+
+
+
+            case shopMenu:
+
+                if(enableDebug == true) {std::cout << "Shop menu" << std::endl;}
+
+                std::cout << 
+                "\nKhajiit  bids you welcome in his store. What do you require?" << 
+                "\n 1. Exit" << 
+                "\n 2. health potion (cost 150XP)" 
+                << std::endl;
+
+                choiceInt = 0;
+                inputErrorCheck();
+                std::cin >> choiceInt;
+                
+                if (choiceInt >= 0 && choiceInt <= 2) {
+                    switch(choiceInt) { 
+                        case 1: // Exit
+                            gameState = gameMenu;
+                        break;
+
+                        case 2:
+                            if (activeHero.getCurrentXP() >= 150) {
+                                activeHero.giveXP(-150);
+                                activeHero.givePotion(1);
+                            }else {std::cout << "You do not have sufficient funds... This displeases Kahjiit..." << std::endl;}
+                        break;
+
+                        default:
+                            invalidInputPrint();
+                        break;
+
+                    }
+                }
 
                 break;
 

@@ -34,3 +34,7 @@ void inputErrorCheck() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 }
+
+void invalidInputPrint() {
+    std::cout << "Please select a valid input" << std::endl;
+}

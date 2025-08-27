@@ -9,6 +9,7 @@ Hero::Hero() {  // Default constructor, is supposed to be overwritten
     currentXP       = 0;
     currentLevel    = 1;
     currentStrength = 2;
+    healthPotions   = 0;
 }
 
 Hero::Hero(std::string name) {  // Constructor with a name
@@ -18,6 +19,7 @@ Hero::Hero(std::string name) {  // Constructor with a name
     currentXP       = 0;
     currentLevel    = 1;
     currentStrength = 2;
+    healthPotions   = 0;
 }
 
 bool Hero::checkLevelUp(){
@@ -73,8 +75,27 @@ void Hero::takeDamage(int damage) {
     std::cout << heroName << " took " << damage << " damage, and is now at " << currentHP << " health out of " << maxHP << std::endl;
 }
 
-void Hero::healHero() {
+void Hero::healHeroFull() {
     currentHP = maxHP;
+    std::cout << getName() << " is resting for night and is healed to " << getCurrentHP() << std::endl;
+}
+
+void Hero::usePotion() {
+    if (healthPotions > 0) {
+        healthPotions--;
+        if (currentHP+5 >= maxHP) {
+            currentHP += 5;
+        } 
+        else {currentHP = maxHP;}
+
+        std::cout << heroName << " drank a health potion, and is now at " << currentHP << " HP" << std::endl;
+    } else {
+        std::cout << "No potions available" << std::endl;
+    }
+}
+
+void Hero::givePotion(int amount) {
+    healthPotions += amount;
 }
 
 void Hero::giveXP(int XP) {

@@ -22,7 +22,9 @@ class Hero {
         void getCurrentStats();
 
         void takeDamage(int damage);
-        void healHero();
+        void healHeroFull();
+        void usePotion();
+        void givePotion(int amount);
         void giveXP(int XP);
     
     private:
@@ -33,6 +35,7 @@ class Hero {
         int currentXP;
         int currentLevel;
         int currentStrength;
+        int healthPotions;
         
 };
 
