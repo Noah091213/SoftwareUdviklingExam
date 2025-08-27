@@ -19,8 +19,10 @@ class Hero {
         void setName(std::string name);
         void setCurrentHP(int newHP);
         void setCurrentXP(int newXP);
+        void getCurrentStats();
 
         void takeDamage(int damage);
+        void healHero();
         void giveXP(int XP);
     
     private:
@@ -30,7 +32,7 @@ class Hero {
         int currentHP;
         int currentXP;
         int currentLevel;
-        int strength;
+        int currentStrength;
         
 };
 

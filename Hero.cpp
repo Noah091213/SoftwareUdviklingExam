@@ -3,28 +3,28 @@
 
 
 Hero::Hero() {  // Default constructor, is supposed to be overwritten
-    heroName     = "unnamed";
-    maxHP        = 10;
-    currentHP    = maxHP;
-    currentXP    = 0;
-    currentLevel = 1;
-    strength     = 2;
+    heroName        = "unnamed";
+    maxHP           = 10;
+    currentHP       = maxHP;
+    currentXP       = 0;
+    currentLevel    = 1;
+    currentStrength = 2;
 }
 
 Hero::Hero(std::string name) {  // Constructor with a name
-    heroName     = name;
-    maxHP        = 10;
-    currentHP    = maxHP;
-    currentXP    = 0;
-    currentLevel = 1;
-    strength     = 2;
+    heroName        = name;
+    maxHP           = 10;
+    currentHP       = maxHP;
+    currentXP       = 0;
+    currentLevel    = 1;
+    currentStrength = 2;
 }
 
 bool Hero::checkLevelUp(){
     if (currentXP >= currentLevel*1000 ) {  // Check if the current xp is more than the current level times 1000. So every level needs more and more xp
         currentXP -= currentLevel*1000; // Remove all XP needed to level up. For level 3 fx, 3000 xp is needed to level up, and so that will be removed
         currentLevel++;     // Increase the level by one
-        strength++;         // Increase strength by one per level
+        currentStrength++;         // Increase strength by one per level
         maxHP += 2;         // Increase the max HP of the player
         currentHP = maxHP;  // Reset the heros hp to max due to levelup
         return true;        // Return that a level up was completed
@@ -40,7 +40,7 @@ int Hero::getCurrentHP() {
 }
 
 int Hero::getStrength() {
-    return strength;
+    return currentStrength;
 }
 
 int Hero::getCurrentXP() {
@@ -62,9 +62,19 @@ void Hero::setCurrentXP(int newXP){
     currentXP = newXP;
 }
 
+void Hero::getCurrentStats() {
+    std::cout << "\n" << heroName << " is currently at " << currentHP << " out of " << maxHP << " HP"<< 
+    "\nThey are level " << currentLevel << " with " << currentLevel*1000-currentXP << " XP away from leveling up!" << 
+    "\nCurrent strength is " << currentStrength << std::endl;
+}
+
 void Hero::takeDamage(int damage) {
     currentHP -= damage;
     std::cout << heroName << " took " << damage << " damage, and is now at " << currentHP << " health out of " << maxHP << std::endl;
+}
+
+void Hero::healHero() {
+    currentHP = maxHP;
 }
 
 void Hero::giveXP(int XP) {
