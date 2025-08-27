@@ -30,7 +30,7 @@ int main() {
     
 
     // Create enemy types
-    Enemy trainingDummy("Training dummy", 4, 1, 100, "BoNk");
+    Enemy trainingDummy("Training dummy", 4, 1, 500, "BoNk");
     Enemy weakFighter("Weak Fighter", 4, 2, 200, "*Punches with fist*");
     Enemy strongFighter("Strong Fighter", 8, 3, 400, "*Stabs with knife*");
     Enemy strongerFighter("Stronger Fighter", 10, 4, 500, "*Swipes with sword*");
@@ -48,7 +48,7 @@ int main() {
             case startMenu:
                 if(enableDebug == true) {std::cout << "startMenu state" << std::endl;}
 
-                std::cout << "\nWhat would you like to do?\n\n 1. Create a new character \n 2. Load a previous character" << std::endl;
+                std::cout << "\nWhat would you like to do?\n\n 1. Create a new character \n 2. Load a previous character \n 3. Exit game" << std::endl;
                 choiceInt = 0;
                 inputErrorCheck();
                 std::cin >> choiceInt;
@@ -60,6 +60,10 @@ int main() {
 
                     case 2:
                         gameState = loadChar;
+                    break;
+
+                    case 3:
+                        gameRun = false;
                     break;
 
                     default:
@@ -76,6 +80,7 @@ int main() {
                 //std::cout << "not yet implemented" << std::endl;
                 
                 if (storedHeros.size() != 0) {
+
                     std::cout << "\nCurrently stored fighters:" << std::endl;
                     for(int i = 0; i < storedHeros.size(); i++) {
                         std::cout << i+1 << ". " << storedHeros[i].getName() << std::endl;
@@ -214,6 +219,13 @@ int main() {
                         case 7: // Main menu
                             if(enableDebug == true) {std::cout << "Return to main menu" << std::endl;}
                             gameState = startMenu;
+
+                            for (int i = 0; i < storedHeros.size(); i++) {
+                                if (activeHero.getName() == storedHeros[i].getName()){
+                                    storedHeros[i] = activeHero;
+                                }
+                                activeHero = Hero();
+                            }
                             
                             break;
 
@@ -284,11 +296,13 @@ int main() {
                             std::cout << "\nEnemys turn\n" << std::endl;
                             isFighting = activeHero.takeDamage(currentEnemy.doDamage());
                             if (activeHero.getCurrentHP() <= 0) {
+                                
                                 for (int i = 0; i < storedHeros.size(); i++) {
                                     if (activeHero.getName() == storedHeros[i].getName()){
                                         storedHeros.erase(storedHeros.begin()+i);
                                     }
                                 }
+                                activeHero = Hero();
                                 
                                 gameState = startMenu;
 
@@ -299,7 +313,7 @@ int main() {
                     }
                     
                 }
-                if (activeHero.getCurrentHP() > 0) {
+                if (activeHero.getCurrentHP() > 0 && activeHero.getName() != "unnamed") {
                     gameState = gameMenu;
                 }
 
