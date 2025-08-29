@@ -1,0 +1,3 @@
+/home/sammy/adventureTest/SoftwareUdviklingExam/build/CMakeFiles/TheArena.dir
+/home/sammy/adventureTest/SoftwareUdviklingExam/build/CMakeFiles/edit_cache.dir
+/home/sammy/adventureTest/SoftwareUdviklingExam/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/TheArena.dir/Functions.cpp.o CMakeFiles/TheArena.dir/Hero.cpp.o CMakeFiles/TheArena.dir/Enemy.cpp.o CMakeFiles/TheArena.dir/Tournament.cpp.o CMakeFiles/TheArena.dir/main.cpp.o -o TheArena 

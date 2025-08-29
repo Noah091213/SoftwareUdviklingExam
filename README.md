@@ -8,7 +8,7 @@ Exam project for software in the second semester of robotics engineering.
 
 ## About the Project
 
-This is a text based fighting game, about leveling up and slaying foes!
+This is a text based fighting game called The Arena, about leveling up and slaying foes!
 
 It is made in C++ and written in Windows 10, but has to run in Linux, specifically Ubuntu 22.04.
 
@@ -30,7 +30,6 @@ Step-by-step guide on how to install and run the project.
 ```bash
 # Example to download and compile the project
 git clone https://github.com/Noah091213/SoftwareUdviklingExam.git
-mkdir build
 cd build
 cmake ..
 make
@@ -44,7 +43,7 @@ To run the program use the following:
 ```bash
 # To run the program
 cd build
-./adventureGame
+./TheArena
 
 ```
 
