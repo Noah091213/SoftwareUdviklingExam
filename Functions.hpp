@@ -5,5 +5,6 @@
 bool stringIsEqual(std::string input1, std::string input2);
 void inputErrorCheck();
 void invalidInputPrint();
+int getRandomNum(int limit);
 
 #endif

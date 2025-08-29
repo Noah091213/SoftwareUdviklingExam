@@ -4,6 +4,8 @@
 #include <utility>
 #include <algorithm>
 #include <bits/stdc++.h>
+#include <cstdlib>
+#include <ctime>
 
 bool stringIsEqual (std::string input1, std::string input2) {
     std::transform(input1.cbegin(), input1.cend(), input1.begin(), toupper);
@@ -26,4 +28,9 @@ void inputErrorCheck() {
 
 void invalidInputPrint() {
     std::cout << "Please select a valid input" << std::endl;
+}
+
+int getRandomNum(int limit) {
+    srand(time(0));         // Seed for randomization, goes by the time, meaning it is actually random every time
+    return(rand()%limit+1); // Get a random number, modulus with the limit +1 to stay within that limit
 }
