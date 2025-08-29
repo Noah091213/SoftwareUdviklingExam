@@ -11,6 +11,7 @@ Hero::Hero() {  // Default constructor, is supposed to be overwritten
     currentLevel    = 1;
     currentStrength = 2;
     healthPotions   = 0;
+    goldCoins       = 0;
 }
 
 Hero::Hero(std::string name) {  // Constructor with a name
@@ -22,6 +23,7 @@ Hero::Hero(std::string name) {  // Constructor with a name
     currentLevel    = 1;
     currentStrength = 2;
     healthPotions   = 0;
+    goldCoins       = 0;
 }
 
 bool Hero::checkLevelUp(){
@@ -57,6 +59,10 @@ int Hero::getCurrentXP() {
 
 int Hero::getCurrentLevel() {
     return currentLevel;
+}
+
+int Hero::getGold() {
+    return goldCoins;
 }
 
 void Hero::setName(std::string name){
@@ -120,3 +126,8 @@ void Hero::giveXP(int XP) {
         std::cout << "\nCongratulations! " << heroName << " leveled up to level " << currentLevel << std::endl; 
     }
 }
+
+void Hero::giveGold(int amount) {
+    goldCoins += amount;
+}
+

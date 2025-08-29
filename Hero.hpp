@@ -16,6 +16,7 @@ class Hero {
         int getStrength();
         int getCurrentXP();
         int getCurrentLevel();
+        int getGold();
         
         void setName(std::string name);
         void setCurrentHP(int newHP);
@@ -27,6 +28,7 @@ class Hero {
         void usePotion();
         void givePotion(int amount);
         void giveXP(int XP);
+        void giveGold(int amount);
     
     private:
         
@@ -38,6 +40,7 @@ class Hero {
         int currentLevel;
         int currentStrength;
         int healthPotions;
+        int goldCoins;
         
 };
 

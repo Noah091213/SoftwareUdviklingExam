@@ -1,14 +1,17 @@
 #include "Hero.hpp"
 #include "Enemy.hpp"
 #include "Functions.hpp"
+#include "Tournament.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
+
+
 int main() {
     std::cout << "Welcome to the gladiator ring" << std::endl;
-
+    
     // Init variables, cannot be done later as the game runs in a statemachine
     bool gameRun = true;
     bool enableDebug = false;
@@ -23,25 +26,35 @@ int main() {
     
     Hero activeHero;
     Enemy currentEnemy;
+    Tournament activeTournament;
     std::vector<Enemy> activeCombatEncounter;
     std::vector<Hero> storedHeros;
 
-    bool isFighting;
+    bool isTournament = false;
     int xpReward;
-    
 
-    // Create enemy types
-    Enemy trainingDummy("Training dummy", 4, 1, 500, "BoNk");
-    Enemy weakFighter("Weak Fighter", 4, 2, 200, "*Punches with fist*");
-    Enemy strongFighter("Strong Fighter", 8, 3, 400, "*Stabs with knife*");
-    Enemy strongerFighter("Stronger Fighter", 10, 4, 500, "*Swipes with sword*");
-    Enemy StrongestFighter("Strongest Fighter", 15, 5, 800, "*Pokes with trident*");
-    Enemy gorilla("Gorilla", 30, 5, 1000, "Oooh Banana");   // I hope you get this reference
-    Enemy lion("Lion", 5, 8, 1500, "RAWR");
-    Enemy elephant("Elephant", 40, 6, 2000, "*Stomp stomp*");
-    Enemy caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*");
-
+    Enemy trainingDummy("Training dummy", 4, 1, 500, "BoNk", 0);
+    Enemy weakFighter("Weak Fighter", 4, 2, 200, "*Punches with fist*", 0);
+    Enemy strongFighter("Strong Fighter", 8, 3, 400, "*Stabs with knife*", 2);
+    Enemy strongerFighter("Stronger Fighter", 10, 4, 500, "*Swipes with sword*", 4);
+    Enemy strongestFighter("Strongest Fighter", 15, 5, 800, "*Pokes with trident*", 6);
+    Enemy gorilla("Gorilla", 30, 5, 1000, "Oooh Banana",10);
+    Enemy lion("Lion", 5, 8, 1500, "RAWR", 10);
+    Enemy elephant("Elephant", 40, 6, 2000, "*Stomp stomp*", 15);
+    Enemy caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*", 25);
+    std::vector<Enemy> enemyVector;
     
+    enemyVector.push_back(trainingDummy);
+    enemyVector.push_back(weakFighter);
+    enemyVector.push_back(strongFighter);
+    enemyVector.push_back(strongerFighter);
+    enemyVector.push_back(strongestFighter);
+    enemyVector.push_back(gorilla);
+    enemyVector.push_back(lion);
+    enemyVector.push_back(elephant);
+    enemyVector.push_back(caesar);
+
+
 
     while (gameRun == true) {
         switch(gameState) {
@@ -136,12 +149,12 @@ int main() {
 
                 std::cout <<"\n\n"<<  activeHero.getName() << " is your fighter! What would you like to do?" << std::endl;
 
-                std::cout << " 1. Show fighter stats \n 2. Train \n 3. Fight in the ring \n 4. Fight Caesar \n 5. Rest \n 6. Shop \n 7. Go to main menu" << std::endl;
+                std::cout << " 1. Show fighter stats \n 2. Train \n 3. Fight in the ring (1v1) \n 4. Fight in a tournament \n 5. Fight Caesar \n 6. Rest \n 7. Shop \n 8. Go to main menu" << std::endl;
                 choiceInt = 0;
                 inputErrorCheck();
                 std::cin >> choiceInt;
                 
-                if (choiceInt >= 0 && choiceInt <= 7) {
+                if (choiceInt > 0 && choiceInt <= 8) {
                     switch(choiceInt) {
                         case 1: // Get stats
                             if(enableDebug == true) {std::cout << "Stats print" << std::endl;}
@@ -164,7 +177,7 @@ int main() {
                             inputErrorCheck();
                             std::cin >> choiceInt;
                             
-                            if (choiceInt >= 0 && choiceInt <= 7) {
+                            if (choiceInt > 0 && choiceInt <= 7) {
                                 switch(choiceInt) {
                                     case 1:
                                         activeCombatEncounter.push_back(weakFighter);
@@ -179,7 +192,7 @@ int main() {
                                         break;
                                         
                                     case 4:
-                                        activeCombatEncounter.push_back(StrongestFighter);
+                                        activeCombatEncounter.push_back(strongestFighter);
                                         break;
                                         
                                     case 5:
@@ -197,28 +210,66 @@ int main() {
                             gameState = inFight;
                             }
                                         
-
-
                             break;
 
-                        case 4: // Boss fight
+                        case 4: // Tournament
+                            std::cout << "\nWelcome to tournaments! Choose a tournament to compete!" << 
+                            "\n 1. Easy tournament - 5 gold reward\n 2. Medium tournament - 10 gold \n 3. Hard tournment - 25 gold \n 4. Exit" <<std::endl;
+                            
+                            choiceInt = 0;
+                            inputErrorCheck();
+                            std::cin >> choiceInt;
+                            
+                            if (choiceInt > 0 && choiceInt <= 4) {
+                                switch(choiceInt) {
+                                    case 1:
+                                        activeTournament = Tournament("Easy tournament", 3, activeHero.getCurrentLevel()-3, 5, enemyVector);
+                                        break;
+
+
+                                    case 2:
+                                        activeTournament = Tournament("Medium tournament", 4, activeHero.getCurrentLevel(), 10, enemyVector);
+                                        break;
+
+                                    case 3:
+                                        activeTournament = Tournament("Hard tournament", 5, activeHero.getCurrentLevel()+3, 25, enemyVector);
+                                        break;
+
+                                    case 4:
+                                        if (enableDebug == true) {
+                                            std::cout << "Leaving tournaments" << std::endl;
+                                        }
+                                        break;
+                                }
+                            }
+                            if (choiceInt == 4) {
+                                break;
+                            }
+                            activeCombatEncounter = activeTournament.getEnemies();
+                            isTournament = true;       
+                            gameState = inFight;
+                            std::cout << "start fight" << std::endl;
+                            
+                            break;
+
+                        case 5: // Boss fight
                             if(enableDebug == true) {std::cout << "Boss fight" << std::endl;}
                             activeCombatEncounter.push_back(caesar);
                             gameState = inFight;
                             break;
 
-                        case 5: // Heal
+                        case 6: // Heal
                             if(enableDebug == true) {std::cout << "Heal print" << std::endl;}
                             activeHero.healHeroFull();
                             
                             break;
 
-                        case 6: // Shop
+                        case 7: // Shop
                             gameState = shopMenu;
                             
                             break;
 
-                        case 7: // Main menu
+                        case 8: // Main menu
                             if(enableDebug == true) {std::cout << "Return to main menu" << std::endl;}
                             gameState = startMenu;
 
@@ -251,8 +302,9 @@ int main() {
                 // Start fight
                 
                 currentEnemy = activeCombatEncounter[0];
+                //currentEnemy.addModifier();
                 
-                std::cout << "\nYou enter the arena, your opponent is " << currentEnemy.getName() << std::endl;;
+                std::cout << "\nYou enter the arena, your opponent is " << currentEnemy.getName() << " with " << currentEnemy.getHP() << " HP" << std::endl;;
                 while(activeCombatEncounter.size() != 0 && activeHero.getStatus() == true) {
                     switch (currentTurn) {
                         case playerTurn:
@@ -263,7 +315,7 @@ int main() {
                             inputErrorCheck();
                             std::cin >> choiceInt;
                             
-                            if (choiceInt >= 0 && choiceInt <= 3) {
+                            if (choiceInt > 0 && choiceInt <= 3) {
                                 currentTurn = enemyTurn;
                                 switch(choiceInt) {
                                     case 1:
@@ -326,8 +378,15 @@ int main() {
                     }
                     
                 }
+
                 if (activeHero.getCurrentHP() > 0 && activeHero.getName() != "unnamed") {
                     gameState = gameMenu;
+
+                    if (isTournament == true) {
+                        isTournament = false;
+                        std::cout << "You won the " << activeTournament.getName() << "! You recieve " << activeTournament.getGold() << " gold." << std::endl;
+                        activeHero.giveGold(activeTournament.getGold());
+                    }
                 }
 
                 break;
