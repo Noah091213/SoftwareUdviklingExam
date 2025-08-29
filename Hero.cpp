@@ -79,7 +79,7 @@ void Hero::setCurrentXP(int newXP){
 void Hero::getCurrentStats() {
     std::cout << "\n" << heroName << " is currently at " << currentHP << "/" << maxHP << " HP"<< 
     "\nThey are level " << currentLevel << " with " << currentXP << "/" << currentLevel*1000 << " XP to level up!" << 
-    "\nCurrent strength is " << currentStrength << std::endl;
+    "\nCurrent strength is " << currentStrength << ", and they have " << goldCoins << " gold and " << healthPotions << " health potions." << std::endl;
 }
 
 void Hero::takeDamage(int damage) {
@@ -92,7 +92,6 @@ void Hero::takeDamage(int damage) {
         return;
     }
     std::cout << heroName << " took " << damage << " damage, and is now at " << currentHP << " health out of " << maxHP << std::endl;
-    //return true;
 }
 
 void Hero::healHeroFull() {
@@ -103,8 +102,8 @@ void Hero::healHeroFull() {
 void Hero::usePotion() {
     if (healthPotions > 0) {
         healthPotions--;
-        if (currentHP+5 >= maxHP) {
-            currentHP += 5;
+        if (currentHP+15 >= maxHP) {
+            currentHP += 15;
         } 
         else {currentHP = maxHP;}
 
@@ -116,6 +115,7 @@ void Hero::usePotion() {
 
 void Hero::givePotion(int amount) {
     healthPotions += amount;
+    std::cout << heroName << " has " << healthPotions << " health potions." << std::endl;
 }
 
 void Hero::giveXP(int XP) {

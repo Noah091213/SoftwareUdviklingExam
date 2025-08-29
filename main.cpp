@@ -41,7 +41,7 @@ int main() {
     Enemy gorilla("Gorilla", 30, 5, 1000, "Oooh Banana",10);
     Enemy lion("Lion", 5, 8, 1500, "RAWR", 10);
     Enemy elephant("Elephant", 40, 6, 2000, "*Stomp stomp*", 15);
-    Enemy caesar("Caesar", 100, 10, 3000, "*Laugs in superiority*", 25);
+    Enemy caesar("Caesar", 100, 10, 3000, "*Laughs in superiority*", 25);
     std::vector<Enemy> enemyVector;
     
     enemyVector.push_back(trainingDummy);
@@ -400,7 +400,7 @@ int main() {
                 std::cout << 
                 "\nKhajiit  bids you welcome in his store. What do you require?" << 
                 "\n 1. Exit" << 
-                "\n 2. health potion (cost 150XP)" 
+                "\n 2. health potion (cost 3 gold)" 
                 << std::endl;
 
                 choiceInt = 0;
@@ -414,8 +414,8 @@ int main() {
                         break;
 
                         case 2:
-                            if (activeHero.getCurrentXP() >= 150) {
-                                activeHero.giveXP(-150);
+                            if (activeHero.getGold() >= 3) {
+                                activeHero.giveGold(-3);
                                 activeHero.givePotion(1);
                             }else {std::cout << "You do not have sufficient funds... This displeases Kahjiit..." << std::endl;}
                         break;
