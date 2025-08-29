@@ -17,12 +17,13 @@ int main() {
     int         choiceInt = 0;
     
     enum gameStates {startMenu, gameMenu, inFight, loadChar, newChar, shopMenu};
-    enum fightTurns {playerTurn, enemyTurn};
+    enum fightTurns {playerTurn, enemyTurn, enemyDefeated};
     gameStates gameState = startMenu;
     fightTurns currentTurn;
     
     Hero activeHero;
     Enemy currentEnemy;
+    std::vector<Enemy> activeCombatEncounter;
     std::vector<Hero> storedHeros;
 
     bool isFighting;
@@ -114,6 +115,7 @@ int main() {
             case newChar:
                 if(enableDebug == true) {std::cout << "newChar state" << std::endl;}
                 
+                activeHero = Hero();
                 std::cout << "\nWhat is the name of your fighter?" << std::endl;
                 
                 inputErrorCheck();
@@ -149,7 +151,7 @@ int main() {
 
                         case 2: // Train
                             if(enableDebug == true) {std::cout << "Training grounds" << std::endl;}
-                            currentEnemy = trainingDummy;
+                            activeCombatEncounter.push_back(trainingDummy);
                             gameState = inFight;
                             break;
 
@@ -165,31 +167,31 @@ int main() {
                             if (choiceInt >= 0 && choiceInt <= 7) {
                                 switch(choiceInt) {
                                     case 1:
-                                        currentEnemy = weakFighter;
+                                        activeCombatEncounter.push_back(weakFighter);
                                         break;
                                     
                                     case 2:
-                                        currentEnemy = strongFighter;
+                                        activeCombatEncounter.push_back(strongFighter);
                                         break;
                                         
                                     case 3:
-                                        currentEnemy = strongerFighter;
+                                        activeCombatEncounter.push_back(strongerFighter);
                                         break;
                                         
                                     case 4:
-                                        currentEnemy = StrongestFighter;
+                                        activeCombatEncounter.push_back(StrongestFighter);
                                         break;
                                         
                                     case 5:
-                                        currentEnemy = gorilla;
+                                        activeCombatEncounter.push_back(gorilla);
                                         break;
                                         
                                     case 6:
-                                        currentEnemy = lion;
+                                        activeCombatEncounter.push_back(lion);
                                         break;
                                         
                                     case 7:
-                                        currentEnemy = elephant;
+                                        activeCombatEncounter.push_back(elephant);
                                         break;
                                 }
                             gameState = inFight;
@@ -201,7 +203,7 @@ int main() {
 
                         case 4: // Boss fight
                             if(enableDebug == true) {std::cout << "Boss fight" << std::endl;}
-                            currentEnemy = caesar;
+                            activeCombatEncounter.push_back(caesar);
                             gameState = inFight;
                             break;
 
@@ -242,16 +244,16 @@ int main() {
             case inFight:
                 if(enableDebug == true) {std::cout << "inFight state" << std::endl;}
 
-                isFighting = true;
                 xpReward = 0;
                 currentTurn = playerTurn;
             
 
                 // Start fight
                 
+                currentEnemy = activeCombatEncounter[0];
                 
-                std::cout;
-                while(isFighting == true && activeHero.getCurrentHP() >= 0 && currentEnemy.getHP() >= 0) {
+                std::cout << "\nYou enter the arena, your opponent is " << currentEnemy.getName() << std::endl;;
+                while(activeCombatEncounter.size() != 0 && activeHero.getStatus() == true) {
                     switch (currentTurn) {
                         case playerTurn:
                             // Player option select
@@ -270,10 +272,7 @@ int main() {
                                         if (xpReward == 0) {
                                             std::cout << "HUARH   you deal " << activeHero.getStrength() << " damage to " << currentEnemy.getName() << "\n" << currentEnemy.getName() << " has " << currentEnemy.getHP() << " HP left"<<std::endl;
                                         } else {
-                                            //std::cout << "Haha *stabs opponent in the heart* \nYou defeated " << currentEnemy.getName() << " and recieved " << xpReward << " XP" << std::endl;
-                                            activeHero.giveXP(xpReward);
-                                            isFighting = false;
-                            
+                                            currentTurn = enemyDefeated;
                                             break;
                                         }
                                     break;
@@ -285,7 +284,7 @@ int main() {
                                     case 3:
                                         std::cout << "You run like a coward and lose 200 XP" << std::endl;
                                         activeHero.giveXP(-200);
-                                        isFighting = false;
+                                        activeCombatEncounter.clear();
                                     break;
                                 }
                             }
@@ -294,21 +293,35 @@ int main() {
                         case enemyTurn:
                             // Enemy do damage
                             std::cout << "\nEnemys turn\n" << std::endl;
-                            isFighting = activeHero.takeDamage(currentEnemy.doDamage());
-                            if (activeHero.getCurrentHP() <= 0) {
+                            activeHero.takeDamage(currentEnemy.doDamage());    // Deal damage to the player
+                            if (activeHero.getStatus() == false) {                           // If the player reaches 0 hitpoints, game is over
                                 
-                                for (int i = 0; i < storedHeros.size(); i++) {
-                                    if (activeHero.getName() == storedHeros[i].getName()){
-                                        storedHeros.erase(storedHeros.begin()+i);
+                                for (int i = 0; i < storedHeros.size(); i++) {              // Loop through all saved fighters
+                                    if (activeHero.getName() == storedHeros[i].getName()){  // If a fighters name matches the fighter checked
+                                        storedHeros.erase(storedHeros.begin()+i);           // Delete that fighter as he is dead
                                     }
                                 }
-                                activeHero = Hero();
+                                //activeHero = Hero();    // Copy the clean hero, this ensures the player actually starts a new char for certain
                                 
                                 gameState = startMenu;
 
                             }
                             currentTurn = playerTurn;
                             break;
+
+                        case enemyDefeated:
+                            activeHero.giveXP(xpReward);
+                            activeCombatEncounter.erase(activeCombatEncounter.begin()); // Removes the first object in the combat encounter, this clears the currently defeated enemy
+                            
+                            if (activeCombatEncounter.size() != 0) {    // If the combat que still has enemies, take the next enemy in line
+                                currentEnemy = activeCombatEncounter[0];// Copy the next enemy to be the current enemy
+                                std::cout << "\nYou defeated one opponent, but can you defeat the next? " << currentEnemy.getName() << " has entered the arena\n" << std::endl;
+                                currentTurn = playerTurn;               // Go back to fighting
+                            } else {                                    // If the combat que no longer has enemies, inform the player, combat will automatically break due to combat que not having elements
+                                std::cout << "\nCongratulations, you have defeated all enemies, for now...\n" << std::endl;
+                            }
+
+                        break;
 
                     }
                     

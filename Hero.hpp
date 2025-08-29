@@ -11,6 +11,7 @@ class Hero {
         bool checkLevelUp();
 
         std::string getName();
+        bool getStatus();
         int getCurrentHP();
         int getStrength();
         int getCurrentXP();
@@ -21,7 +22,7 @@ class Hero {
         void setCurrentXP(int newXP);
         void getCurrentStats();
 
-        bool takeDamage(int damage);
+        void takeDamage(int damage);
         void healHeroFull();
         void usePotion();
         void givePotion(int amount);
@@ -30,6 +31,7 @@ class Hero {
     private:
         
         std::string  heroName;
+        bool isAlive;
         int maxHP;
         int currentHP;
         int currentXP;

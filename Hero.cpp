@@ -4,6 +4,7 @@
 
 Hero::Hero() {  // Default constructor, is supposed to be overwritten
     heroName        = "unnamed";
+    isAlive         = true;
     maxHP           = 10;
     currentHP       = maxHP;
     currentXP       = 0;
@@ -14,6 +15,7 @@ Hero::Hero() {  // Default constructor, is supposed to be overwritten
 
 Hero::Hero(std::string name) {  // Constructor with a name
     heroName        = name;
+    isAlive         = true;
     maxHP           = 10;
     currentHP       = maxHP;
     currentXP       = 0;
@@ -26,7 +28,7 @@ bool Hero::checkLevelUp(){
     if (currentXP >= currentLevel*1000 ) {  // Check if the current xp is more than the current level times 1000. So every level needs more and more xp
         currentXP -= currentLevel*1000; // Remove all XP needed to level up. For level 3 fx, 3000 xp is needed to level up, and so that will be removed
         currentLevel++;     // Increase the level by one
-        currentStrength++;         // Increase strength by one per level
+        currentStrength++;  // Increase strength by one per level
         maxHP += 2;         // Increase the max HP of the player
         currentHP = maxHP;  // Reset the heros hp to max due to levelup
         return true;        // Return that a level up was completed
@@ -35,6 +37,10 @@ bool Hero::checkLevelUp(){
 
 std::string Hero::getName() {
     return heroName;
+}
+
+bool Hero::getStatus() {
+    return isAlive;
 }
 
 int Hero::getCurrentHP() {
@@ -70,14 +76,17 @@ void Hero::getCurrentStats() {
     "\nCurrent strength is " << currentStrength << std::endl;
 }
 
-bool Hero::takeDamage(int damage) {
+void Hero::takeDamage(int damage) {
     currentHP -= damage;
     if (currentHP <= 0) {
         std::cout << heroName << " took fatal damage!" << std::endl;
-        return false;
+        
+        isAlive = false;
+
+        return;
     }
     std::cout << heroName << " took " << damage << " damage, and is now at " << currentHP << " health out of " << maxHP << std::endl;
-    return true;
+    //return true;
 }
 
 void Hero::healHeroFull() {
