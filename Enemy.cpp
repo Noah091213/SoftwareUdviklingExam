@@ -1,14 +1,16 @@
 #include "Enemy.hpp"
+#include "Functions.hpp"
 #include <iostream>
 
 Enemy::Enemy() {}
 
-Enemy::Enemy(std::string name, int hp, int str, int xp, std::string message) {
+Enemy::Enemy(std::string name, int hp, int str, int xp, std::string message, int crRating) {
     enemyName       = name;
     currentHP       = hp;
     strength        = str;
     xpToGive        = xp;
     damageMessage   = message;
+    int challengeRating = crRating;
 }
 
 int Enemy::takeDamage(int damage) { // Method to deal damage to this enemy
@@ -41,4 +43,41 @@ int Enemy::getHP() {
 
 int Enemy::getStrength() {
     return strength;
+}
+
+int Enemy::getDifficulty() {
+    return challengeRating;
+}
+
+void Enemy::addModifier() {
+    switch(getRandomNum(5)) {
+        case 1:
+            enemyName = "Strong " + enemyName;
+            strength*=1.5;
+            xpToGive*=1.5;
+        break;
+            
+        case 2:
+            enemyName = "Weak " + enemyName;
+            strength*=0.5;
+        break;
+
+        case 3:
+            enemyName = "Tanky " + enemyName;
+            currentHP*=1.5;
+        break;
+
+        case 4:
+            enemyName = "Diciple " + enemyName;
+            strength = 0;
+            damageMessage = "I can do no harm and will not hurt you";
+        break;
+
+        case 5:
+            enemyName = "Super strong " + enemyName;
+            strength*=2;
+            xpToGive*=2.5;
+        break;
+
+    }
 }

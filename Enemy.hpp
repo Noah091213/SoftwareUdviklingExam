@@ -6,7 +6,7 @@ class Enemy {
 
     public:
         Enemy();
-        Enemy(std::string name, int hp, int str, int xp, std::string damageMessage);   
+        Enemy(std::string name, int hp, int str, int xp, std::string damageMessage, int crRating);   
 
         int takeDamage(int damage); // Returns XP if enemy dies, else return 0
         int doDamage();
@@ -16,6 +16,9 @@ class Enemy {
         int getXP();        
         int getHP();
         int getStrength();
+        int getDifficulty();
+
+        void addModifier();
 
     private:
         
@@ -24,6 +27,7 @@ class Enemy {
         int xpToGive;
         int strength;
         std::string damageMessage;
+        int challengeRating;
         
 };
 
